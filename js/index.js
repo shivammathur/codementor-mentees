@@ -60,7 +60,7 @@ DATA.users.forEach(c => {
   }
 });
 
-var maxRadius = 300;
+var maxRadius = 100;
 
 var sessionsData = Object.keys(countries).map(c => {
   var country = countries[c];
