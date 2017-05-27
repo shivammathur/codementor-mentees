@@ -1,4 +1,4 @@
-var DATA = {
+let DATA = {
     users: [{
         "user": 3501399980699325921,
         "country": "Colombia"

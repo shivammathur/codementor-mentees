@@ -5,3 +5,4 @@
 node_modules
 data/oh.json
 data/se.json
+.idea*
