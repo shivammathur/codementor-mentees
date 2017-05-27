@@ -120,6 +120,6 @@ $(window).resize(function(){
     return 0;
   });
 
-  $('svg').remove();
+  $('.map svg').remove();
   createMap("sessions-map", sessionsData);
 });
