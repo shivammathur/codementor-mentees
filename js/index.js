@@ -1,4 +1,4 @@
-var COLORS = [
+let COLORS = [
 "#1abc9c" , "#2ecc71" , "#3498db"
 , "#9b59b6" , "#34495e" , "#16a085"
 , "#27ae60" , "#2980b9" , "#8e44ad"
@@ -8,7 +8,7 @@ var COLORS = [
 , "#bdc3c7" , "#7f8c8d"
 ];
 
-var fills = {
+let fills = {
   defaultFill: '#777'
 };
 
@@ -17,7 +17,7 @@ threeLeterCountryCodes.forEach(function (c, i) {
 });
 
 function createMap(id, data) {
-  var map = new Datamap({
+  let map = new Datamap({
     element: document.getElementById(id),
     geographyConfig: {
       popupOnHover: true,
@@ -30,43 +30,44 @@ function createMap(id, data) {
       borderColor: 'rgba(0,0,0,0.1)',
       highlightBorderColor: 'rgba(0,0,0,0.1)'
     },
-    done: function(map) {
-      map.bubbles(data, {
-        popupTemplate: function(geo, data) {
-          return '<div class="hoverinfo">Country: <strong>' + data.country + '</strong><br>Sessions & Helps: <strong>' + data.sessions + '</strong><br>Mentees: <strong>' + data.user_count + '</strong></div>';
-        }
-      });
-    },
     fills: fills
   });
+  map.bubbles(data, {
+    'popupTemplate': function(data) {
+      return '<div class="hoverinfo">Country: <strong>' + data.country + '</strong><br>Sessions & Helps: <strong>' + data.sessions + '</strong><br>Mentees: <strong>' + data.user_count + '</strong></div>';
+    }
+  });
+
   return map;
 }
 
-var countries = {};
-var cNames = {};
-var maxSessions = -Infinity;
-var maxUsers = -Infinity;
-var allUniqueUsers = {};
+let countries = {};
+let cNames = {};
+let maxSessions = -Infinity;
+let maxUsers = -Infinity;
+let allUniqueUsers = {};
 
 DATA.users.forEach(c => {
   allUniqueUsers[c.user] = 1;
   if (c.country === "N/A") { return; }
   c.countryCode = getCountryCode(c.country);
   cNames[c.countryCode] = c.country;
-  var arr = countries[c.countryCode] = countries[c.countryCode] || []
+  let arr = countries[c.countryCode] = countries[c.countryCode] || [];
   arr.push(c);
   if (arr.length > maxSessions) {
     maxSessions = arr.length;
   }
 });
 
-var maxRadius = 100;
+let maxRadius = 100;
+if($(window).width() <= 768)
+  maxRadius = 15;
 
-var sessionsData = Object.keys(countries).map(c => {
-  var country = countries[c];
-  var sessions = country.length;
-  var r = maxRadius * sessions / maxSessions;
-  var uniqueUsers = {};
+let sessionsData = Object.keys(countries).map(c => {
+  let country = countries[c];
+  let sessions = country.length;
+  let r = maxRadius * sessions / maxSessions;
+  let uniqueUsers = {};
   country.forEach(function (c) {
     uniqueUsers[c.user] = 1;
   });
@@ -82,10 +83,10 @@ var sessionsData = Object.keys(countries).map(c => {
     , country: cNames[country[0].countryCode]
     , fillKey: c
     , user_count: uniqueUsers
-  };
+  }
 });
 
-sessionsData.sort(function(a, b){ 
+sessionsData.sort(function(a, b){
   if (a.radius < b.radius) {
     return 1;
   }
@@ -97,3 +98,28 @@ sessionsData.sort(function(a, b){
 
 document.getElementById("happy-people-count").innerHTML = Object.keys(allUniqueUsers).length.toString();
 map = createMap("sessions-map", sessionsData);
+
+
+$(window).resize(function(){
+  let maxRadius = 100;
+  if($(window).width() <= 768)
+    maxRadius = 15;
+
+  sessionsData.forEach(function(object){
+    let r = maxRadius * object.sessions / maxSessions;
+    object.radius = r > 60 ? 60 : r < 10 ? 10 : r
+  });
+
+  sessionsData.sort(function(a, b){
+    if (a.radius < b.radius) {
+      return 1;
+    }
+    if (a.radius > b.radius) {
+      return -1;
+    }
+    return 0;
+  });
+
+  $('svg').remove();
+  createMap("sessions-map", sessionsData);
+});
