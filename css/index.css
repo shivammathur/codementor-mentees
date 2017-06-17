@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
-body, h1 {
+body{
     font-family: 'Lato', sans-serif;
     background: #333;
 }
@@ -35,7 +35,7 @@ h1.title {
     transform: translateX(-50%);
     text-align: center;
     margin: 0;
-    color: #555;
+    color: #777;
 }
 
 #vizualization-type {
@@ -118,5 +118,8 @@ small {
     .github-corner .octo-arm {
         -webkit-animation: octocat-wave 560ms ease-in-out;
                 animation: octocat-wave 560ms ease-in-out
+    }
+    h1.title {
+        font-size: 1.5em
     }
 }
