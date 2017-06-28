@@ -59,7 +59,7 @@ DATA.users.forEach(c => {
   }
 });
 
-let maxRadius = 150;
+let maxRadius = 100;
 if($(window).width() <= 768)
   maxRadius = 15;
 
@@ -101,7 +101,7 @@ map = createMap("sessions-map", sessionsData);
 
 
 $(window).resize(function(){
-  let maxRadius = 150;
+  let maxRadius = 100;
   if($(window).width() <= 768)
     maxRadius = 15;
 
