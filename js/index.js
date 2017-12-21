@@ -34,7 +34,7 @@ function createMap(id, data) {
   });
   map.bubbles(data, {
     'popupTemplate': function(data) {
-      return '<div class="hoverinfo">Country: <strong>' + data.country + '</strong><br>Sessions & Helps: <strong>' + data.sessions + '</strong><br>Mentees: <strong>' + data.user_count + '</strong></div>';
+      return '<div class="hoverinfo">Country: <strong>' + data.country + '</strong><br>Sessions & Projects: <strong>' + data.sessions + '</strong><br>Mentees: <strong>' + data.user_count + '</strong></div>';
     }
   });
 
@@ -49,7 +49,7 @@ let allUniqueUsers = {};
 
 DATA.users.forEach(c => {
   allUniqueUsers[c.user] = 1;
-  if (c.country === "N/A") { return; }
+  if (c.country === "N/A") { console.log(c.user);return; }
   c.countryCode = getCountryCode(c.country);
   cNames[c.countryCode] = c.country;
   let arr = countries[c.countryCode] = countries[c.countryCode] || [];
@@ -92,11 +92,13 @@ sessionsData.sort(function(a, b){
   }
   if (a.radius > b.radius) {
     return -1;
+
   }
   return 0;
 });
 
 document.getElementById("happy-people-count").innerHTML = Object.keys(allUniqueUsers).length.toString();
+document.getElementById("sessions").innerHTML = DATA.users.length.toString();
 map = createMap("sessions-map", sessionsData);
 
 
