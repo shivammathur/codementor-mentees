@@ -5,4 +5,7 @@
 node_modules
 data/oh.json
 data/se.json
+data/codementor.py
+data/data.py
+data/data.json
 .idea*
