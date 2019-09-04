@@ -3,9 +3,11 @@
 *~
 *.log
 node_modules
-data/oh.json
-data/se.json
+*.json
+data/ca.crt
 data/codementor.py
 data/data.py
 data/data.json
+data/cache
+data
 .idea*
